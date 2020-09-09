@@ -1,9 +1,14 @@
 import React from 'react';
 import styled from 'styled-components/native';
 
-export default function Keep({ title, text, color }) {
+export default function Keep({ id, title, text, color, navigation }) {
   return (
-    <KeepContainer color={color}>
+    <KeepContainer color={color} 
+                   onPress={() =>{
+                    navigation.push('EditKeep', {
+                      itemId: id,
+                    })
+                  }}>
       <KeepTitle numberOfLines={1}>{title}</KeepTitle>
       <KeepText numberOfLines={1}>{text}</KeepText>
     </KeepContainer>

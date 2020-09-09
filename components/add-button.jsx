@@ -3,9 +3,12 @@ import styled from 'styled-components/native';
 import { Ionicons } from '@expo/vector-icons';
 
 
-export default function AddButton() {
+export default function AddButton({navigation}) {
+  // console.log(navigation);
   return (
-    <AddButtonContainer>
+    // onPress={() => navigation.push('AddKeep')}
+    
+    <AddButtonContainer onPress={() => navigation.push('AddKeep')}>
       <Ionicons name="ios-add" size={33} color="#ffffff" />
     </AddButtonContainer>
   )

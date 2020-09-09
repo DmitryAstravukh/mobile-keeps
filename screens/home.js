@@ -6,21 +6,26 @@ import Keep from './../components/keep';
 import GroupTitle from './../components/group-title';
 import AddButton from './../components/add-button';
 
+import { StatusBar} from "react-native";
+
 const DATA = [
   {
     title: '11 сентября',
     data: [
       {
+        id: 1,
         title: 'Заголовок 1',
         text: 'Текст 1',
         color: '#ff5750'
       },
       {
+        id: 2,
         title: 'Заголовок 2',
         text: 'Текст 2',
         color: '#ffa4a0'
       },
       {
+        id: 3,
         title: 'Заголовок 3',
         text: 'Текст 3',
         color: 'green'
@@ -31,16 +36,19 @@ const DATA = [
     title: '12 сентября',
     data: [
       {
+        id: 4,
         title: 'Заголовок 1',
         text: 'Текст 1',
         color: 'gray'
       },
       {
+        id: 5,
         title: 'Заголовок 2',
         text: 'Текст 2',
         color: 'grey'
       },
       {
+        id: 6,
         title: 'Заголовок 3',
         text: 'Текст 3',
         color: 'green'
@@ -49,9 +57,10 @@ const DATA = [
   },
 ];
 
-export function Home() {
+export function Home({navigation}) {
   return (
     <Container>
+      <StatusBar hidden={true} />
       <SectionList
         sections={DATA}
 
@@ -60,7 +69,7 @@ export function Home() {
         }
 
         renderItem={
-          ({ item }) => <Keep {...item}/> 
+          ({ item }) => <Keep {...item} navigation={navigation}/> 
         }
 
         renderSectionHeader={
@@ -70,7 +79,7 @@ export function Home() {
         }
       />
       
-      <AddButton />
+      <AddButton navigation={navigation}/>
     </Container>
   );
 }
