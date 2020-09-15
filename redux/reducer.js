@@ -3,7 +3,7 @@ import { GET_ALL_KEEPS, ADD_KEEP, EDIT_KEEP } from './actions_types';
 const inicialState = {
   keeps: [
     {
-      title: '11 сентября',
+      title: '11.9.2020',
       data: [
         {
           id: 1,
@@ -22,11 +22,17 @@ const inicialState = {
           title: 'Заголовок 3',
           text: 'Текст 3',
           color: 'orange'
+        },
+        {
+          id: 10,
+          title: 'Заголовок 4',
+          text: 'Текст 4',
+          color: 'yellow'
         }
       ]
     },
     {
-      title: '12 сентября',
+      title: '16.9.2020',
       data: [
         {
           id: 4,
@@ -51,7 +57,70 @@ const inicialState = {
   ]
 };
 
+
+
+const addKeep = (state, data) => {
+  const currentDate = `${new Date().getDate()}.${new Date().getMonth()+1}.${new Date().getFullYear()}`;
+  const repetition = state.keeps.findIndex(obj => obj.title === currentDate);
+
+  if(repetition === -1){
+    const newItem = {
+      title: currentDate,
+      data: [
+        {
+          id: 25,
+          title: data.title,
+          text: data.text,
+          color: data.color
+        }
+      ]
+    }
+
+    return {
+      ...state,
+      keeps: [
+        ...state.keeps,
+        newItem
+      ]
+    }
+
+  } else {
+    // debugger;
+    const item = {
+      ...state.keeps,
+      [repetition]: {
+        ...state.keeps[repetition],
+        data: [
+          ...state.keeps[repetition].data,
+          {
+            id: 30,
+            title: data.title,
+            text: data.text,
+            color: data.color
+          }
+        ]
+      }
+    };
+    // debugger;
+    //some shit
+    let m = [];
+    for (const key in item) {
+      m.push(item[key])
+    }
+    return {
+      ...state,
+      keeps: [
+        ...m
+        
+      ]
+    }
+  }
+
+}
+
 const getAllKeeps = (state) => {
+  //debugger;
+  //let a = addKeep(state, {title: 'title', text: 'text', color: 'blue'});
   return state;
 }
 
