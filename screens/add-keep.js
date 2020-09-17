@@ -7,6 +7,7 @@ import { Keyboard} from "react-native";
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 import ModalWindow from './../components/modal-window';
+import * as styleVariables from './../style-variables';
 
 export function AddKeep() {
 
@@ -20,9 +21,9 @@ export function AddKeep() {
       selectedLocations: {},
       selectedValues: [],
       locations: [
-        { item: 'gray', id: '1' },
-        { item: 'yellow', id: '2' },
-        { item: 'red', id: '3' }
+        { item: 'Серый', id: '1' },
+        { item: 'Желтый', id: '2' },
+        { item: 'Красный', id: '3' }
       ]
     }
   );
@@ -30,13 +31,15 @@ export function AddKeep() {
   const dispatch = useDispatch();
 
   const _addKeep = () => {
-
-    if(title && text && colors.selectedLocations.item){
+    const dateNow = `${new Date().getDate()}.${(new Date().getMonth() + 1)}.${new Date().getFullYear()}`;
+    
+    if(text && colors.selectedLocations.item){
       let obj = {
-        title: title.trim(), 
+        title: title ? title.trim() : dateNow, 
         text: text.trim(), 
         color: colors.selectedLocations.item
       };
+
       dispatch(addKeep(obj));
       clearFields();
       setModalText('Заметка добавлена');
@@ -106,7 +109,7 @@ const Input = styled.TextInput`
   border-bottom-color: silver;
   margin-top: 15px;
   padding: 5px;
-  color: #545660;
+  color: ${styleVariables.MAIN_TEXT_COLOR};
   font-size: 16px;
 `;
 
@@ -121,11 +124,11 @@ const AddKeepButton = styled.TouchableOpacity`
   width: 100%;
   padding: 30px 0;
   border-radius: 50px;
-  background-color: #8529e4;
+  background-color: ${styleVariables.MAIN_COLOR};
   margin-top: 20px;
 `;
 
 const AddKeepButtonText = styled.Text`
-  color: #ffffff;
+  color: ${styleVariables.MAIN_BACKGROUND_COLOR};
   font-size: 16px;
 `;

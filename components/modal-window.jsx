@@ -3,6 +3,8 @@ import React from 'react';
 import styled from 'styled-components/native';
 import { Modal} from "react-native";
 
+import * as styleVariables from './../style-variables';
+
 const ModalWindow = ({ modalVisible,  modalText, setModalVisible}) => {
   return (
     <Modal animationType="fade" transparent={true} visible={modalVisible}>
@@ -34,7 +36,7 @@ const ModalContainer = styled.View`
 `;
 
 const ModalItem = styled.View`
-  background-color: #ffffff;
+  background-color: ${styleVariables.MAIN_BACKGROUND_COLOR};
   width: 100%;
   margin: 0 10px;
   padding: 30px 20px;
@@ -45,18 +47,18 @@ const ModalItem = styled.View`
 const ModalText = styled.Text`
   font-size: 18px;
   margin-bottom: 20px;
-  color: #545660;
+  color: ${styleVariables.MAIN_TEXT_COLOR};
 `;
 
 const ModalButton = styled.TouchableOpacity`
-  color: #ffffff;
+  color: ${styleVariables.MAIN_TEXT_COLOR};
   padding: 10px 80px;
   border-radius: 50px;
-  background-color: #8529e4;
+  background-color: ${styleVariables.MAIN_BUTTON_BACKGROUND_COLOR};
 `;
 
 const ModalButtonText = styled.Text`
-  color: #ffffff;
+  color: ${styleVariables.MAIN_BUTTON_TEXT_COLOR};
   font-size: 18px;
 `;
 
