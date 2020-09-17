@@ -6,3 +6,10 @@ export const getAllKeeps = () => {
     type: GET_ALL_KEEPS
   }
 }
+
+export const addKeep = (data) => {
+  return {
+    type: ADD_KEEP,
+    data
+  }
+}

@@ -60,6 +60,7 @@ const inicialState = {
 
 
 const addKeep = (state, data) => {
+  console.log(data);
   const currentDate = `${new Date().getDate()}.${new Date().getMonth()+1}.${new Date().getFullYear()}`;
   const repetition = state.keeps.findIndex(obj => obj.title === currentDate);
 
@@ -85,33 +86,29 @@ const addKeep = (state, data) => {
     }
 
   } else {
-    // debugger;
-    const item = {
-      ...state.keeps,
-      [repetition]: {
-        ...state.keeps[repetition],
-        data: [
-          ...state.keeps[repetition].data,
-          {
-            id: 30,
-            title: data.title,
-            text: data.text,
-            color: data.color
-          }
-        ]
+    // Object.values используется т.к.  "вы не можете распространять свойства объекта на массив, 
+    //объекты всегда будут распространять свои свойства на новый объект."
+    const item = Object.values(
+      {
+        ...state.keeps,
+        [repetition]: {
+          ...state.keeps[repetition],
+          data: [
+            ...state.keeps[repetition].data,
+            {
+              id: 30,
+              title: data.title,
+              text: data.text,
+              color: data.color
+            }
+          ]
+        }
       }
-    };
-    // debugger;
-    //some shit
-    let m = [];
-    for (const key in item) {
-      m.push(item[key])
-    }
+    );
     return {
       ...state,
       keeps: [
-        ...m
-        
+        ...item
       ]
     }
   }
@@ -128,6 +125,9 @@ const reducer = (state = inicialState, action) => {
   switch(action.type){
     case GET_ALL_KEEPS: 
       return getAllKeeps(state);
+    
+    case ADD_KEEP: 
+      return addKeep(state, action.data);
 
     default: return state;
   }
