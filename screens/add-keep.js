@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import styled from 'styled-components/native';
 import SelectBox from 'react-native-multi-selectbox';
 import { addKeep } from './../redux/actions';
-import { Keyboard} from "react-native";
+import { Keyboard} from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 import ModalWindow from './../components/modal-window';
@@ -21,9 +21,9 @@ export function AddKeep() {
       selectedLocations: {},
       selectedValues: [],
       locations: [
-        { item: 'Серый', id: '1' },
-        { item: 'Желтый', id: '2' },
-        { item: 'Красный', id: '3' }
+        { id: '1', item: 'Серый', color: styleVariables.KEEP_BACKGROUND_DEFAULT },
+        { id: '2', item: 'Желтый', color: styleVariables.KEEP_BACKGROUND_WARNING },
+        { id: '3', item: 'Красный', color: styleVariables.KEEP_BACKGROUND_DANGER }
       ]
     }
   );
@@ -55,6 +55,8 @@ export function AddKeep() {
     setText('');
     setColor(state => ({ ...state, selectedLocations: {} }));
   }
+
+
   return (
     
     <AddKeepContainer >
@@ -98,6 +100,8 @@ export function AddKeep() {
   )
 }
 
+
+
 const AddKeepContainer = styled.View`
   margin: 0 5px;
 `;
@@ -106,7 +110,7 @@ const Input = styled.TextInput`
   width: 100%;
   border: none;
   border-bottom-width: 2px;
-  border-bottom-color: silver;
+  border-bottom-color: ${styleVariables.BORDER_BOTTOM_INPUT};
   margin-top: 15px;
   padding: 5px;
   color: ${styleVariables.MAIN_TEXT_COLOR};
