@@ -1,18 +1,40 @@
 import React from 'react';
 import styled from 'styled-components/native';
+import Swipeout from 'react-native-swipeout';
+import { FontAwesome } from '@expo/vector-icons'; 
 
 import * as styleVariables from './../style-variables';
 export default function Keep({ id, title, text, color, navigation }) {
+
+  const swipeBtns = [{
+    component: (
+      <SwipeDelBtn>
+        <FontAwesome name="trash-o" size={28} color={styleVariables.MAIN_BACKGROUND_COLOR} />
+        <Br />
+      </SwipeDelBtn>
+    ),
+    backgroundColor: 'red',
+    underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
+    onPress: () => { console.log(id) }
+  }];
+
+
   return (
-    <KeepContainer color={color} 
-                   onPress={() =>{
-                    navigation.push('EditKeep', {
-                      itemId: id,
-                    })
-                  }}>
-      <KeepTitle numberOfLines={1}>{title}</KeepTitle>
-      <KeepText numberOfLines={1}>{text}</KeepText>
-    </KeepContainer>
+    <Swipeout right={swipeBtns}
+      autoClose='true'
+      backgroundColor='transparent'
+    >
+      <KeepContainer color={color} 
+                    onPress={() =>{
+                      navigation.push('EditKeep', {
+                        itemId: id,
+                      })
+                    }}>
+        <KeepTitle numberOfLines={1}>{title}</KeepTitle>
+        <KeepText numberOfLines={1}>{text}</KeepText>
+      </KeepContainer>
+      
+    </Swipeout>
   );
 }
 
@@ -57,4 +79,21 @@ const KeepText = styled.Text`
   color: ${styleVariables.KEEP_TEXT_COLOR};
   font-size: 18px;
   margin-top: 10px;
+`;
+
+const SwipeDelBtn = styled.View`
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  height: 95px;
+  position: relative;
+`;
+
+const Br = styled.View`
+  background-color: ${styleVariables.MAIN_BACKGROUND_COLOR};
+  width: 80px;
+  height: 5px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
 `;
