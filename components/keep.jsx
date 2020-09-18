@@ -26,13 +26,13 @@ Keep.defaultProps = {
 
 const backgroundKeppColorTransformer = (color) => {
   switch (color.toLowerCase()) {
-    case 'серый':
+    case styleVariables.KEEP_BACKGROUND_DEFAULT:
       return styleVariables.KEEP_BACKGROUND_DEFAULT;
 
-    case 'желтый':
+    case styleVariables.KEEP_BACKGROUND_WARNING:
       return styleVariables.KEEP_BACKGROUND_WARNING;
 
-    case 'красный':
+    case styleVariables.KEEP_BACKGROUND_DANGER:
       return styleVariables.KEEP_BACKGROUND_DANGER;
   
     default: return styleVariables.KEEP_BACKGROUND_DEFAULT;

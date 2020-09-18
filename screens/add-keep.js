@@ -9,7 +9,7 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import ModalWindow from './../components/modal-window';
 import * as styleVariables from './../style-variables';
 
-export function AddKeep() {
+export const AddKeep = () => {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [modalText, setModalText] = useState('Заметка добавлена');
@@ -33,11 +33,11 @@ export function AddKeep() {
   const _addKeep = () => {
     const dateNow = `${new Date().getDate()}.${(new Date().getMonth() + 1)}.${new Date().getFullYear()}`;
     
-    if(text && colors.selectedLocations.item){
+    if(text && colors.selectedLocations.color){
       let obj = {
         title: title ? title.trim() : dateNow, 
         text: text.trim(), 
-        color: colors.selectedLocations.item
+        color: colors.selectedLocations.color
       };
 
       dispatch(addKeep(obj));
@@ -61,7 +61,13 @@ export function AddKeep() {
     
     <AddKeepContainer >
 
-      <ModalWindow modalText={modalText} modalVisible={modalVisible} setModalVisible={setModalVisible}/>
+      <ModalWindow modalVisible={modalVisible}>
+        <ModalText>{modalText}</ModalText>
+        <ModalButton onPress={() => setModalVisible(false)}>
+          <ModalButtonText>Ок</ModalButtonText>
+        </ModalButton>
+      </ModalWindow>
+
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>{/* скрывает клаву */}
         <Input
           onChangeText={title => setTitle(title)}
@@ -135,4 +141,23 @@ const AddKeepButton = styled.TouchableOpacity`
 const AddKeepButtonText = styled.Text`
   color: ${styleVariables.MAIN_BACKGROUND_COLOR};
   font-size: 16px;
+`;
+
+
+const ModalText = styled.Text`
+  font-size: 18px;
+  margin-bottom: 20px;
+  color: ${styleVariables.MAIN_TEXT_COLOR};
+`;
+
+const ModalButton = styled.TouchableOpacity`
+  color: ${styleVariables.MAIN_TEXT_COLOR};
+  padding: 10px 80px;
+  border-radius: 50px;
+  background-color: ${styleVariables.MAIN_BUTTON_BACKGROUND_COLOR};
+`;
+
+const ModalButtonText = styled.Text`
+  color: ${styleVariables.MAIN_BUTTON_TEXT_COLOR};
+  font-size: 18px;
 `;

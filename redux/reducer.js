@@ -9,19 +9,19 @@ const inicialState = {
           id: 1,
           title: 'Заголовок 1',
           text: 'Текст 1',
-          color: 'Серый'
+          color: '#fff'
         },
         {
           id: 2,
           title: 'Заголовок 2',
           text: 'Текст 2',
-          color: 'желтый'
+          color: '#fff'
         },
         {
           id: 3,
           title: 'Заголовок 3',
           text: 'Текст 3',
-          color: 'красный'
+          color: '#fff'
         },
         {
           id: 10,
