@@ -4,7 +4,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import { Home, AddKeep, EditKeep } from './screens';
 
-import { fromLeft } from 'react-navigation-transitions';
 
 import { Provider } from 'react-redux';
 import store from './redux/store';
@@ -30,7 +29,7 @@ export default function App() {
             {props => <Home {...props} />}
           </Stack.Screen> 
 
-          <Stack.Screen name='AddKeep' options={{ title: 'Добавление заметки', transitionConfig: () => fromLeft() }}>
+          <Stack.Screen name='AddKeep' options={{ title: 'Добавление заметки' }}>
             {props => <AddKeep {...props} />}
           </Stack.Screen>
 

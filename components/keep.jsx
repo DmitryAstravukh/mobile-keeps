@@ -9,8 +9,7 @@ export default function Keep({ id, title, text, color, navigation }) {
   const swipeBtns = [{
     component: (
       <SwipeDelBtn>
-        <FontAwesome name="trash-o" size={28} color={styleVariables.MAIN_BACKGROUND_COLOR} />
-        <Br />
+        <FontAwesome name="trash-o" size={28} color={styleVariables.MAIN_BACKGROUND_COLOR} /><Br />
       </SwipeDelBtn>
     ),
     backgroundColor: 'red',
@@ -26,9 +25,11 @@ export default function Keep({ id, title, text, color, navigation }) {
     >
       <KeepContainer color={color} 
                     onPress={() =>{
-                      navigation.push('EditKeep', {
-                        itemId: id,
-                      })
+                      navigation.push('EditKeep', { 
+                        id, 
+                        propTitle: title, 
+                        propText: text, 
+                        propColor: color })
                     }}>
         <KeepTitle numberOfLines={1}>{title}</KeepTitle>
         <KeepText numberOfLines={1}>{text}</KeepText>

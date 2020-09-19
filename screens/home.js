@@ -5,12 +5,12 @@ import styled from 'styled-components/native';
 import Keep from './../components/keep';
 import GroupTitle from './../components/group-title';
 import AddButton from './../components/add-button';
-import { StatusBar} from "react-native";
+import { StatusBar } from "react-native";
 import { getAllKeeps } from './../redux/actions';
 import * as styleVariables from './../style-variables';
 import { FontAwesome5 } from '@expo/vector-icons'; 
 import ModalWindow from './../components/modal-window';
-import { Keyboard} from 'react-native';
+import { Keyboard } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 export const Home = ({ navigation }) => {

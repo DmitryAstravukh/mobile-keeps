@@ -31,11 +31,11 @@ export const AddKeep = () => {
   const dispatch = useDispatch();
 
   const _addKeep = () => {
-    const dateNow = `${new Date().getDate()}.${(new Date().getMonth() + 1)}.${new Date().getFullYear()}`;
-    
-    if(text && colors.selectedLocations.color){
+    const dateNow = `${new Date().getDate()}.${(new Date().getMonth() + 1)}.${new Date().getFullYear()} в`;
+    const timeNow = `${new Date().getHours()}ч.${(new Date().getMinutes())}м.${new Date().getSeconds()}с`;
+    if(text && colors.selectedLocations.color && text.trim().length > 0){
       let obj = {
-        title: title ? title.trim() : dateNow, 
+        title: title ? title.trim() : `${dateNow} ${timeNow}`, 
         text: text.trim(), 
         color: colors.selectedLocations.color
       };

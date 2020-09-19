@@ -57,11 +57,16 @@ const inicialState = {
   ]
 };
 
+const getCurrentDate = () => {
+  return `${new Date().getDate()}.${new Date().getMonth()+1}.${new Date().getFullYear()}`;
+}
 
+const getAllKeeps = (state) => {
+  return state;
+}
 
 const addKeep = (state, data) => {
-  console.log(data);
-  const currentDate = `${new Date().getDate()}.${new Date().getMonth()+1}.${new Date().getFullYear()}`;
+  const currentDate = getCurrentDate();
   const repetition = state.keeps.findIndex(obj => obj.title === currentDate);
 
   if(repetition === -1){
@@ -115,9 +120,8 @@ const addKeep = (state, data) => {
 
 }
 
-const getAllKeeps = (state) => {
-  //debugger;
-  //let a = addKeep(state, {title: 'title', text: 'text', color: 'blue'});
+const editKeep = (state, data) => { // return is required
+  console.log(data);
   return state;
 }
 
@@ -128,6 +132,9 @@ const reducer = (state = inicialState, action) => {
     
     case ADD_KEEP: 
       return addKeep(state, action.data);
+      
+    case EDIT_KEEP: 
+      return editKeep(state, action.data);
 
     default: return state;
   }

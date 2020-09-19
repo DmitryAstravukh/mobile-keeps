@@ -13,3 +13,10 @@ export const addKeep = (data) => {
     data
   }
 }
+
+export const editKeep = (data) => {
+  return {
+    type: EDIT_KEEP,
+    data
+  }
+}
