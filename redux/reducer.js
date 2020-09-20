@@ -24,7 +24,7 @@ const inicialState = {
           color: '#fff'
         },
         {
-          id: 10,
+          id: 4,
           title: 'Заголовок 4',
           text: 'Текст 4',
           color: 'yellow'
@@ -35,19 +35,19 @@ const inicialState = {
       title: '16.9.2020',
       data: [
         {
-          id: 4,
+          id: 5,
           title: 'Заголовок 1',
           text: 'Текст 1',
           color: 'gray'
         },
         {
-          id: 5,
+          id: 6,
           title: 'Заголовок 2',
           text: 'Текст 2',
           color: 'grey'
         },
         {
-          id: 6,
+          id: 7,
           title: 'Заголовок 3',
           text: 'Текст 3',
           color: 'green'
@@ -121,8 +121,48 @@ const addKeep = (state, data) => {
 }
 
 const editKeep = (state, data) => { // return is required
-  console.log(data);
-  return state;
+  let keepObjItemIndex;
+  let keepObjDataItemIndex;
+
+  state.keeps.forEach((obj, index) => {
+    obj.data.forEach((keep, i) => {
+      if(keep.id === data.id){
+        keepObjItemIndex = index;
+        keepObjDataItemIndex = i;
+      }
+    }) 
+  });
+
+  const editedKeep = Object.values(
+    {
+      ...state.keeps[keepObjItemIndex].data,
+      [keepObjDataItemIndex]: {
+        ...state.keeps[keepObjItemIndex].data[keepObjDataItemIndex],
+        title: data.title,
+        text: data.text,
+        color: data.color
+      }
+    }
+  )
+
+  const editedKeeps = Object.values(
+    {
+      ...state.keeps,
+      [keepObjItemIndex]: {
+        ...state.keeps[keepObjItemIndex],
+        data:[
+          ...editedKeep
+        ]
+      }
+    }
+  )
+
+  return {
+    ...state,
+    keeps: [
+      ...editedKeeps
+    ]
+  }
 }
 
 const reducer = (state = inicialState, action) => {
