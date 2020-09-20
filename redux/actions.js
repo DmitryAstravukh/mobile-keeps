@@ -1,4 +1,4 @@
-import { GET_ALL_KEEPS, ADD_KEEP, EDIT_KEEP } from './actions_types';
+import { GET_ALL_KEEPS, ADD_KEEP, EDIT_KEEP, DELETE_KEEP } from './actions_types';
 
 
 export const getAllKeeps = () => {
@@ -18,5 +18,12 @@ export const editKeep = (data) => {
   return {
     type: EDIT_KEEP,
     data
+  }
+}
+
+export const deleteKeep = (id) => {
+  return {
+    type: DELETE_KEEP,
+    id
   }
 }

@@ -1,4 +1,4 @@
-import { GET_ALL_KEEPS, ADD_KEEP, EDIT_KEEP } from './actions_types';
+import { GET_ALL_KEEPS, ADD_KEEP, EDIT_KEEP, DELETE_KEEP } from './actions_types';
 
 const inicialState = {
   keeps: [
@@ -120,7 +120,7 @@ const addKeep = (state, data) => {
 
 }
 
-const editKeep = (state, data) => { // return is required
+const editKeep = (state, data) => { 
   let keepObjItemIndex;
   let keepObjDataItemIndex;
 
@@ -145,25 +145,51 @@ const editKeep = (state, data) => { // return is required
     }
   )
 
-  const editedKeeps = Object.values(
-    {
-      ...state.keeps,
-      [keepObjItemIndex]: {
-        ...state.keeps[keepObjItemIndex],
-        data:[
-          ...editedKeep
-        ]
-      }
-    }
-  )
-
   return {
     ...state,
-    keeps: [
-      ...editedKeeps
-    ]
+    keeps: Object.values(
+      {
+        ...state.keeps,
+        [keepObjItemIndex]: {
+          ...state.keeps[keepObjItemIndex],
+          data: editedKeep
+        }
+      }
+    )
+    
   }
 }
+
+const deleteKeep = (state, id) => {
+  let keepObjItemIndex;
+
+  state.keeps.forEach((obj, index) => {
+    obj.data.forEach(keep => {
+      if(keep.id === id) keepObjItemIndex = index; 
+    }) 
+  });
+
+  if(state.keeps[keepObjItemIndex].data.length-1 > 0){
+    return {
+      ...state,
+      keeps: Object.values(
+        {
+          ...state.keeps,
+          [keepObjItemIndex]: {
+            ...state.keeps[keepObjItemIndex],
+            data: state.keeps[keepObjItemIndex].data.filter(keep => keep.id !== id)
+          }
+        }
+      )
+    }
+  } else {
+    return {
+      ...state,
+      keeps: state.keeps.filter((item, index) => index !== keepObjItemIndex)
+    }
+  }
+}
+
 
 const reducer = (state = inicialState, action) => {
   switch(action.type){
@@ -175,6 +201,9 @@ const reducer = (state = inicialState, action) => {
       
     case EDIT_KEEP: 
       return editKeep(state, action.data);
+
+    case DELETE_KEEP: 
+      return deleteKeep(state, action.id);
 
     default: return state;
   }

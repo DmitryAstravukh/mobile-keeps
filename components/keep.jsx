@@ -1,10 +1,14 @@
 import React from 'react';
+import { useDispatch } from "react-redux";
 import styled from 'styled-components/native';
 import Swipeout from 'react-native-swipeout';
 import { FontAwesome } from '@expo/vector-icons'; 
+import { deleteKeep } from './../redux/actions';
 
 import * as styleVariables from './../style-variables';
 export default function Keep({ id, title, text, color, navigation }) {
+
+  const dispatch = useDispatch();
 
   const swipeBtns = [{
     component: (
@@ -14,7 +18,7 @@ export default function Keep({ id, title, text, color, navigation }) {
     ),
     backgroundColor: 'red',
     underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
-    onPress: () => { console.log(id) }
+    onPress: () => { dispatch(deleteKeep(id)) }
   }];
 
 
