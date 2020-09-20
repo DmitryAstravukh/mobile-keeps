@@ -6,7 +6,7 @@ import Keep from './../components/keep';
 import GroupTitle from './../components/group-title';
 import AddButton from './../components/add-button';
 import { StatusBar } from "react-native";
-import { getAllKeeps } from './../redux/actions';
+import { getAllKeeps, filterKeeps, searchKeeps } from './../redux/actions';
 import * as styleVariables from './../style-variables';
 import { FontAwesome5 } from '@expo/vector-icons'; 
 import ModalWindow from './../components/modal-window';
@@ -17,13 +17,15 @@ export const Home = ({ navigation }) => {
   const [modalFilterVisible, setModalFilterVisible] = useState(false);
   const [searchText, setSearchText] = useState();
 
-  const DATA = useSelector(state => state.keeps);
+  const DATA = useSelector(state => state.visibleData);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getAllKeeps())
-  });
+  }, [DATA]);
 
+  console.log('!!!!!-----------------------------------------!!!!!!!');
+  console.log(DATA);
 
   return (
     <Container>
@@ -34,7 +36,10 @@ export const Home = ({ navigation }) => {
       <ModalWindow modalVisible={modalFilterVisible}>
         <ModalText onPress={() =>setModalFilterVisible(false)}>Выберите вариант группировки</ModalText>
 
-        <ModalFilterItem onPress={() => console.log('1')}>
+        <ModalFilterItem onPress={() => {
+          dispatch(filterKeeps(1));
+          setModalFilterVisible(false)
+        }}>
           <ItemNumber>1.</ItemNumber>
           <ItemFilter>
             <ColorBlockDefault></ColorBlockDefault>
@@ -43,7 +48,10 @@ export const Home = ({ navigation }) => {
           </ItemFilter>
         </ModalFilterItem>
 
-        <ModalFilterItem onPress={() => console.log('2')}>
+        <ModalFilterItem onPress={() => {
+          dispatch(filterKeeps(2))
+          setModalFilterVisible(false)
+        }}>
           <ItemNumber>2.</ItemNumber>
           <ItemFilter>
             <ColorBlockDanger></ColorBlockDanger>
@@ -52,7 +60,10 @@ export const Home = ({ navigation }) => {
           </ItemFilter>
         </ModalFilterItem>
 
-        <ModalFilterItem onPress={() => console.log('3')}>
+        <ModalFilterItem onPress={() => {
+          dispatch(filterKeeps(0))
+          setModalFilterVisible(false)
+        }}>
           <ItemNumber>3.</ItemNumber>
           <ItemFilterText>По умолчанию</ItemFilterText>
         </ModalFilterItem>
@@ -67,7 +78,10 @@ export const Home = ({ navigation }) => {
 
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <Input
-          onChangeText={searchText => setSearchText(searchText)}
+          onChangeText={searchText =>{
+            setSearchText(searchText);
+            dispatch(searchKeeps(searchText));
+          }}
           value={searchText}
           placeholder='Найти заметку'
         />
