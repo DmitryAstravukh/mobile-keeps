@@ -1,5 +1,9 @@
 import { GET_ALL_KEEPS, ADD_KEEP, EDIT_KEEP, DELETE_KEEP, FILTER_KEEPS, SEARCH_KEEPS } from './actions_types';
-
+import { 
+  KEEP_BACKGROUND_DEFAULT,
+  KEEP_BACKGROUND_WARNING,
+  KEEP_BACKGROUND_DANGER 
+} from './../style-variables';
 const inicialState = {
   keeps: [
     {
@@ -74,6 +78,14 @@ const getCurrentDate = () => {
 }
 
 const getAllKeeps = (state) => {
+  //return searchKeeps(state, state.searchStr)
+  if(state.visibleData && state.visibleData.length === 0 && state.searchStr === ''){ 
+    //console.log(state.visibleData.length);
+    return {
+      ...state,
+      visibleData: state.keeps
+    }
+  }
   return state;
 }
 
@@ -95,17 +107,26 @@ const addKeep = (state, data) => {
       ]
     }
 
-    return {
+    return filterKeeps({
       ...state,
       keeps: [
         ...state.keeps,
         newItem
-      ],
-      visibleData: [
-        ...state.keeps,
-        newItem
       ]
-    }
+    }, state.filterId)
+
+    // return {
+    //   ...state,
+    //   keeps: [
+    //     ...state.keeps,
+    //     newItem
+    //   ],
+    //   //при добавлении копируется весь новый массив и сбивается поиск
+    //   visibleData: [
+    //     ...state.keeps,
+    //     newItem
+    //   ]
+    // }
 
   } else {
     // Object.values используется т.к.  "вы не можете распространять свойства объекта на массив, 
@@ -128,16 +149,22 @@ const addKeep = (state, data) => {
         }
       }
     );
-    return {
+    return filterKeeps({
       ...state,
-      keeps: item,
-      visibleData: item
-    }
+      keeps: item
+    }, state.filterId);
+    // return {
+    //   ...state,
+    //   keeps: item,
+    //   visibleData: item
+    // }
   }
 
 }
 
 const editKeep = (state, data) => { 
+  //проверять если число редактирования отличается, то переносить в другой блок
+  //отредактировал заметку 16-го числа, она должна перенестить в заметки текущего числа
   let keepObjItemIndex;
   let keepObjDataItemIndex;
 
@@ -163,7 +190,7 @@ const editKeep = (state, data) => {
     }
   )
 
-  return {
+  const editedState = {
     ...state,
     keeps: Object.values(
       {
@@ -173,18 +200,32 @@ const editKeep = (state, data) => {
           data: editedKeep
         }
       }
-    ),
-    visibleData: Object.values(
-      {
-        ...state.keeps,
-        [keepObjItemIndex]: {
-          ...state.keeps[keepObjItemIndex],
-          data: editedKeep
-        }
-      }
     )
-    
-  }
+  };
+
+  return filterKeeps(editedState, state.filterId);
+
+  // return {
+  //   ...state,
+  //   keeps: Object.values(
+  //     {
+  //       ...state.keeps,
+  //       [keepObjItemIndex]: {
+  //         ...state.keeps[keepObjItemIndex],
+  //         data: editedKeep
+  //       }
+  //     }
+  //   ),
+  //   visibleData: Object.values(
+  //     {
+  //       ...state.keeps,
+  //       [keepObjItemIndex]: {
+  //         ...state.keeps[keepObjItemIndex],
+  //         data: editedKeep
+  //       }
+  //     }
+  //   )
+  // }
 }
 
 const deleteKeep = (state, id) => {
@@ -197,7 +238,7 @@ const deleteKeep = (state, id) => {
   });
 
   if(state.keeps[keepObjItemIndex].data.length-1 > 0){
-    return {
+    return filterKeeps({
       ...state,
       keeps: Object.values(
         {
@@ -207,57 +248,103 @@ const deleteKeep = (state, id) => {
             data: state.keeps[keepObjItemIndex].data.filter(keep => keep.id !== id)
           }
         }
-      ),
-      visibleData: Object.values(
-        {
-          ...state.keeps,
-          [keepObjItemIndex]: {
-            ...state.keeps[keepObjItemIndex],
-            data: state.keeps[keepObjItemIndex].data.filter(keep => keep.id !== id)
-          }
-        }
       )
-    }
+    }, state.filterId);
+    // return {
+    //   ...state,
+    //   keeps: Object.values(
+    //     {
+    //       ...state.keeps,
+    //       [keepObjItemIndex]: {
+    //         ...state.keeps[keepObjItemIndex],
+    //         data: state.keeps[keepObjItemIndex].data.filter(keep => keep.id !== id)
+    //       }
+    //     }
+    //   ),
+    //   visibleData: Object.values(
+    //     {
+    //       ...state.keeps,
+    //       [keepObjItemIndex]: {
+    //         ...state.keeps[keepObjItemIndex],
+    //         data: state.keeps[keepObjItemIndex].data.filter(keep => keep.id !== id)
+    //       }
+    //     }
+    //   )
+    // }
   } else {
-    return {
+    return filterKeeps({
       ...state,
-      keeps: state.keeps.filter((item, index) => index !== keepObjItemIndex),
-      visibleData: state.keeps.filter((item, index) => index !== keepObjItemIndex)
-    }
+      keeps: state.keeps.filter((item, index) => index !== keepObjItemIndex)
+    }, state.filterId);
+    // return {
+    //   ...state,
+    //   keeps: state.keeps.filter((item, index) => index !== keepObjItemIndex),
+    //   visibleData: state.keeps.filter((item, index) => index !== keepObjItemIndex)
+    // }
   }
 }
 
+//TODO при поиске и выборе фильтра не фильтрует
 const filterKeeps = (state, filterId) => {
-  //создать свойство со структурой как у заметок и вовращать его
-  // switch(filterId){
-  //   case 0: return state;
+  
+  if(filterId === 0) return searchKeeps({
+    ...state,
+    visibleData: state.keeps
+  }, state.searchStr);
+
+  const filteredData = state.keeps.map(keepBlockObj => {
+
+    const keepsDefault = keepBlockObj.data.filter(keep => {
+      return keep.color.toLowerCase().includes(KEEP_BACKGROUND_DEFAULT.toLowerCase()) 
+    });
     
-  //   case 1: 
-  //     return {
-  //       keeps: [
-  //         state.keeps[0]
-  //       ]
-  //     };
+    const keepsWarning = keepBlockObj.data.filter(keep => {
+      return keep.color.toLowerCase().includes(KEEP_BACKGROUND_WARNING.toLowerCase()) 
+    })
 
-  //   case 2: 
-  //     return {
-  //       keeps: [
-  //         state.keeps[1]
-  //       ]
-  //     };
+    const keepsDanger = keepBlockObj.data.filter(keep => {
+      return keep.color.toLowerCase().includes(KEEP_BACKGROUND_DANGER.toLowerCase()) 
+    })
 
-  //   default: return state;
-  // }
-  //делать конкатенацию array.filter по цветам
-  return state;
+    switch(filterId){
+      case 1:
+        return {
+          title: keepBlockObj.title,
+          data: [
+            ...keepsDefault,
+            ...keepsWarning,
+            ...keepsDanger
+          ]
+        };
+
+      case 2:
+        return {
+          title: keepBlockObj.title,
+          data: [
+            ...keepsDanger,
+            ...keepsWarning,
+            ...keepsDefault
+          ]
+        };
+
+      default: return searchKeeps(state, state.searchStr);
+    }
+  });
+
+  return searchKeeps({
+    ...state,
+    visibleData: filteredData
+  }, state.searchStr);
 }
 
 const searchKeeps = (state, str) => {
-  //console.log('---------------------------------------------------------');
+  console.log(state);
+  if(str === '') return state;
+
   const searchedData = state.keeps.map(keepBlockObj => {
     const keepsSearch = keepBlockObj.data.filter(keep => {
       return keep.text.toLowerCase().includes(str.toLowerCase()) || keep.date.toLowerCase().includes(str.toLowerCase())
-    }) // return "data"
+    }) 
 
     if(keepsSearch.length > 0){
       return {
@@ -267,18 +354,9 @@ const searchKeeps = (state, str) => {
     }
   }).filter(item => item !== undefined);
 
-  let a = {
-    ...state,
-    searchStr: str,
-    searchedData,
-    visibleData: searchedData
-  }
-  //console.log(a);
-
   return {
     ...state,
     searchStr: str,
-    searchedData,
     visibleData: searchedData
   }
 }

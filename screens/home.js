@@ -15,17 +15,21 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 export const Home = ({ navigation }) => {
   const [modalFilterVisible, setModalFilterVisible] = useState(false);
-  const [searchText, setSearchText] = useState();
+  
 
   const DATA = useSelector(state => state.visibleData);
+
+  const searchStateStr = useSelector(state => state.searchStr);
+  const [searchText, setSearchText] = useState(searchStateStr);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getAllKeeps())
-  }, [DATA]);
+  }, [DATA, searchStateStr]);
 
   console.log('!!!!!-----------------------------------------!!!!!!!');
-  console.log(DATA);
+  console.log(searchStateStr);
 
   return (
     <Container>
