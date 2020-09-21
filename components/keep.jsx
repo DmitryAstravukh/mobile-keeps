@@ -45,7 +45,7 @@ export default function Keep({ id, title, text, color, navigation }) {
 
 Keep.defaultProps = {
   title: `${new Date().getDate()}.${(new Date().getMonth() + 1)}.${new Date().getFullYear()}`,
-  text: 'Текст не задан',
+  text: '',
   color: styleVariables.KEEP_BACKGROUND_DEFAULT
 }
 

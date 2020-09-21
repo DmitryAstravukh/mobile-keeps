@@ -12,7 +12,7 @@ import * as styleVariables from './../style-variables';
 export const AddKeep = () => {
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [modalText, setModalText] = useState('Заметка добавлена');
+  const [modalText, setModalText] = useState('');
 
   const [title, setTitle] = useState();
   const [text, setText] = useState();
@@ -33,6 +33,8 @@ export const AddKeep = () => {
   const _addKeep = () => {
     const dateNow = `${new Date().getDate()}.${(new Date().getMonth() + 1)}.${new Date().getFullYear()} в`;
     const timeNow = `${new Date().getHours()}ч.${(new Date().getMinutes())}м.${new Date().getSeconds()}с`;
+    
+    //TODO сделать добавление пустой заметки
     if(text && colors.selectedLocations.color && text.trim().length > 0){
       let obj = {
         title: title ? title.trim() : `${dateNow} ${timeNow}`, 
@@ -45,8 +47,18 @@ export const AddKeep = () => {
       setModalText('Заметка добавлена');
       setModalVisible(true);
     } else {
-      setModalText('Заполните все поля');
+      let obj = {
+        title: title ? title : `${dateNow} ${timeNow}`, 
+        text: text, 
+        color: styleVariables.KEEP_BACKGROUND_DEFAULT
+      };
+
+      dispatch(addKeep(obj));
+      clearFields();
+      setModalText('Заметка добавлена');
       setModalVisible(true);
+      // setModalText('Заполните все поля');
+      // setModalVisible(true);
     }
   }
 
