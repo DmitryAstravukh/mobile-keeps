@@ -8,14 +8,15 @@ import AddButton from './../components/add-button';
 import { StatusBar } from "react-native";
 import { getAllKeeps, filterKeeps, searchKeeps } from './../redux/actions';
 import * as styleVariables from './../style-variables';
-import { FontAwesome5 } from '@expo/vector-icons'; 
+import { FontAwesome5 } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';  
 import ModalWindow from './../components/modal-window';
 import { Keyboard } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 export const Home = ({ navigation }) => {
   const [modalFilterVisible, setModalFilterVisible] = useState(false);
-  
+  const [modalAboutAuthorVisible, setmodalAboutAuthorVisible] = useState(false);
 
   const DATA = useSelector(state => state.visibleData);
 
@@ -28,14 +29,25 @@ export const Home = ({ navigation }) => {
     dispatch(getAllKeeps())
   }, [DATA, searchStateStr]);
 
-  console.log('!!!!!-----------------------------------------!!!!!!!');
-  console.log(searchStateStr);
+  // console.log('!!!!!-----------------------------------------!!!!!!!');
+  // console.log(searchStateStr);
 
   return (
     <Container>
+      <InfoContainer onPress={() => setmodalAboutAuthorVisible(true)}>
+        <Ionicons name="md-information-circle-outline" size={32} color={styleVariables.MAIN_BACKGROUND_COLOR} />
+      </InfoContainer>
+
       <FilterContainer onPress={() => setModalFilterVisible(true)}>
         <FontAwesome5 name="filter" size={26} color={styleVariables.MAIN_BACKGROUND_COLOR} />
       </FilterContainer>
+
+      <ModalWindow modalVisible={modalAboutAuthorVisible}>
+        <ModalText>Разработал уч. гр. 881061 - Астраух Дмитрий Сергеевич</ModalText>
+        <ModalButton onPress={() => setmodalAboutAuthorVisible(false)}>
+          <ModalButtonText>Ок</ModalButtonText>
+        </ModalButton>
+      </ModalWindow>
 
       <ModalWindow modalVisible={modalFilterVisible}>
         <ModalText onPress={() =>setModalFilterVisible(false)}>Выберите вариант группировки</ModalText>
@@ -120,6 +132,18 @@ const Container = styled.View`
 `;
 
 const FilterContainer = styled.TouchableOpacity`
+  position: absolute;
+  top: -43px;
+  right: 55px;
+  z-index: 99999;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  background-color: ${styleVariables.MAIN_COLOR};
+`;
+
+const InfoContainer = styled.TouchableOpacity`
   position: absolute;
   top: -43px;
   right: 10px;
